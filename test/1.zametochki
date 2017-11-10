@@ -1,0 +1,20 @@
+hset hkey1 hfield1 hvalue1
+hgetall news111
+hset hkey3 hfield2 hvalue1
+
+hincrby users:1 test 123               
+hvals 
+
+"{\"title\":\"MyNewTitle\",\"content\":\"Lem etc. and more\",\"id\":\"137\"}"
+
+
+
+cd redis
+redis-server redis.conf
+
+redis-cli -p 6400
+
+node .\server.js
+
+npm run dev
+
