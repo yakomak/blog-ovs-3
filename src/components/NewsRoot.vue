@@ -83,11 +83,6 @@ export default {
         title: 'Novi post',
         content: 'Novi-novi content'
       }
-    },
-    saveNewsInArchiv () {
-      axios.post('http://localhost:6500/savenewsinarchiv', this.newPost).then((req) => {
-        console.log('in Archiv')
-      })
     }
   },
   components: {

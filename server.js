@@ -32,55 +32,6 @@ app.get('/', function (req, res) {
 })
 
 // удаляем новость из основной группы
-app.post('/savenewsinarchiv', jsonParser, (req, res, next) => {
-  console.log('/savenewsinarchivs - ', req.body)
-
-  var index = client.get('index', function (err, repl) {
-    if (err) {
-      res.json({status: 'FAIL', error: err})
-      console.log('Что то случилось при получении индекса: ' + err)
-      return
-    }
-    res.json({status: 'OK index'})
-  })
-
-  client.incrby('index', 1)
-
-  client.hset('news111', req.body.id, JSON.stringify(req.body), function (err, repl) {
-    if (err) {
-      res.json({status: 'FAIL', error: err})
-      console.log('Что то случилось при записи: ' + err)
-      return
-    }
-    res.json({status: 'OK'})
-  })
-  client.hdel('news111', req.body.id, function (err) {
-    if (err) {
-      res.json({status: 'FAIL', error: err})
-      console.log('Что то случилось при удалении: ' + err)
-      return
-    }
-    res.json({status: 'OK:news are deleted'})
-  })
-})
-
-app.get('/newnews', (req, res, next) => {
-  // console.log('/newnews')
-  client.hvals('news111', (err, items) => {
-    // console.log(err)
-    items = items || []
-    if (err) {
-      res.json({status: 'FAIL', error: err})
-      console.log('Ошибка при выводе новостей из базы: ' + err)
-      return
-    }
-    items = items.map((item) => { return JSON.parse(item) })
-    // console.log(items)
-    res.json(items)
-  })
-})
-
-// удаляем новость из основной группы
 app.post('/delnews', jsonParser, (req, res, next) => {
   console.log('/delnewsss - ', req.body)
   client.hdel('news111', req.body.id, function (err) {
