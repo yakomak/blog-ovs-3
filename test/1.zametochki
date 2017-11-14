@@ -1,12 +1,16 @@
 hset hkey1 hfield1 hvalue1
-hgetall news111
+
 hset hkey3 hfield2 hvalue1
 
-hincrby users:1 test 123               
+incrby index 5
+
+hincrby users:1 test 123
 hvals 
 
 "{\"title\":\"MyNewTitle\",\"content\":\"Lem etc. and more\",\"id\":\"137\"}"
 
+ hgetall news111
+----------------------
 
 
 cd redis
@@ -17,4 +21,29 @@ redis-cli -p 6400
 node .\server.js
 
 npm run dev
+
+
+=====================================================
+var directions = [[1,2],[2,1],[2,-1],[1,-2],[-1,-2],[-2,-1],[-2,1],[-1,2]];
+
+for (var j = 0; j < 8; j++) {
+for (var i = 0; i < formula.length; i++) {
+  if (formula.slice(i,i+1) === "T") {n += 1} else {
+  if (formula.slice(i,i+1) === "L") {n += 2;} else {
+  if (formula.slice(i,i+1) === "V") {n += 3;} else {
+  if (formula.slice(i,i+1) === "p") {n += 4;} else {
+  if (formula.slice(i,i+1) === "v") {n += 5;} else {
+  if (formula.slice(i,i+1) === "l") {n += 6;} else {
+  if (formula.slice(i,i+1) === "p") {n += 0;} else {
+  if (formula.slice(i,i+1) === "t") {n += 7;} 
+  }  }  }  }  }	}	}
+  if (n >= 8 ) {n %= 8}
+	direct.push(directions[n]);
+}}
+
+https://www.w3schools.com/code/tryit.asp?filename=FLGT96U7ZDSZ
+
+https://codepen.io/ykm/pen/VrWvOy
+====================================================
+
 

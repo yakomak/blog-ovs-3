@@ -10,7 +10,8 @@
     <hr> 
     <!-- Кнопки получения (GET) и сохранения (SAVE) новостей -->
     <!-- <button class="il" @click="getNews">GET News</button>  -->
-    <!-- <button class="il" @click="saveNews">save News</button> -->
+    <!-- <button class="il" @click="saveNews">save News</button> @click="saveNewsInArchiv"-->
+    <button @click="saveNewsInArchiv">Add Posts in Archiv</button>
     <!-- Список новостей  -->
     <newslist :items="posts" @deleteitem="deleteItem"></newslist>
   </div>
@@ -28,7 +29,9 @@ export default {
     return {
       newPost: {
         title: 'Title',
-        content: 'Lorem etc.'
+        content: 'Lorem etc.'// ,
+        // created_at: 'now',
+        // author: 'anonimus'
       },
       idCounter: 0,
       posts: []
@@ -43,8 +46,10 @@ export default {
       var post = {
         ...this.newPost,
         id: ++this.idCounter,
-        created_at: Date.now()
+        created_at: Date.now(),
+        author: 'anonim'
       }
+      console.log(this.post.author)
       this.posts.push(post)
       axios.post('http://localhost:6500/newnews')
     },
@@ -78,6 +83,11 @@ export default {
         title: 'Novi post',
         content: 'Novi-novi content'
       }
+    },
+    saveNewsInArchiv () {
+      axios.post('http://localhost:6500/savenewsinarchiv', this.newPost).then((req) => {
+        console.log('in Archiv')
+      })
     }
   },
   components: {

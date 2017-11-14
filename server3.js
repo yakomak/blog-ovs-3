@@ -1,4 +1,4 @@
-
+                // резервная копия файла server.js
 var exs = require('express')
 var app = exs()
 
@@ -16,7 +16,7 @@ app.use((req, res, next) => {
 
 // отлавливаем ошибки и Сохраняем новость!
 app.post('/savenews', jsonParser, (req, res, next) => {
-  console.log('/savenews', req.body)
+  // console.log('/savenews', req.body)
   client.hset('news111', req.body.id, JSON.stringify(req.body), function (err, repl) {
     if (err) {
       res.json({status: 'FAIL', error: err})
@@ -64,8 +64,35 @@ app.post('/savenewsinarchiv', jsonParser, (req, res, next) => {
   })
 })
 
+// app.all('/newsroot', (req, res, next) => {
+//   res.header('Access-Control-Allow-Origin', '*')
+//   res.header('Access-Control-Allow-Headers', 'X-Requested-With')
+//   next()
+// })
+
+// var jsonParser = bodyParser.json()
+// app.post('/newnews', jsonParser, (req, res, next) => {
+//   jsonParser.stringify(res)
+//   client.hset('key-res', field, value)
+//   if (!req.body) return res.sendStatus(400)
+//   res.json('res-string')
+// })
+
 app.get('/newnews', (req, res, next) => {
   // console.log('/newnews')
+  // res.json([1{
+  //   id: 1,
+  //   title: 'andrew',
+  //   content: '“Не нужно нам идти против того, что нас искушает. Об этом говорит и Евангелие: «Не противься злу». В это время сотворите молитву, и дело изменится, но без вашего возмущения.”'
+  // }, {
+  //   id: 2,
+  //   title: 'andrew2',
+  //   content: 'Не нужно нам идти против... (без вашего возмущения).'
+  // }, {
+  //   id: 370,
+  //   title: 'andrew3',
+  //   content: 'Будте как дети...'
+  // }])
   client.hvals('news111', (err, items) => {
     // console.log(err)
     items = items || []
@@ -96,4 +123,3 @@ app.post('/delnews', jsonParser, (req, res, next) => {
 var port = process.env.PORT || 6500
 app.listen(port)
 console.log(`start server on port ${port}`)
-
