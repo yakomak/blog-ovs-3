@@ -2,10 +2,9 @@
   <div id="app">
     <!-- <img src="./assets/logo.png"> -->
     <ul class="nav navbar-nav">
-      <li class="nav" ><router-link to="/">Блог</router-link></li>
-      <li class="nav" ><router-link to="/nues">Новости</router-link></li>
-      <li class="nav" ><router-link to="/createnews">ДобавьНовость</router-link></li>
-      <li class="nav" ><router-link to="/news">СписокСформой </router-link></li>
+      <li class="nav" ><router-link to="/news">Новости </router-link></li>
+      <li class="nav" ><router-link to="/handbook">Справочник</router-link></li>
+      <li class="nav" ><router-link to="/newcomers">Новичкам</router-link></li>
     </ul>
     <hr style="width:371px"> <!-- =============================================================== -->
     <router-view></router-view>

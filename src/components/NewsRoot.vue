@@ -2,9 +2,12 @@
   <div>
     <div class="create-news-form" >
       <label for="title">Title</label>
-      <input type="text" name="title" id="post-title" v-model="newPost.title"><br>
+      <input type="text" name="title" id="post-title" v-model="newPost.title">
+      <label for="author">Author</label>
+      <input type="text" name="author" id="post-author" v-model="newPost.author"><br>
+      <br>
       <label for="content">Content</label>
-      <textarea name="content" id="post-content" cols="37" rows="4" v-model="newPost.content"></textarea><br>
+      <textarea name="content" id="post-content" cols="53" rows="4" v-model="newPost.content"></textarea><br>
       <button @click="saveNews">Add Post</button>
     </div>
     <hr> 
@@ -29,9 +32,9 @@ export default {
     return {
       newPost: {
         title: 'Title',
-        content: 'Lorem etc.'// ,
-        // created_at: 'now',
-        // author: 'anonimus'
+        content: 'Lorem etc.',
+        created_at: 'now',
+        author: 'anonimus'
       },
       idCounter: 0,
       posts: []
@@ -56,10 +59,12 @@ export default {
     deleteItem (id) {
       console.log(`deletefromroot ${id}`)
       // debugger
-      _.remove(this.posts, (post) => { return post.id === id })
-      this.posts = _.clone(this.posts)
-      console.log(this.posts)
-      axios.post('http://localhost:6500/delnews', {id})
+      if (confirm('вы уверены? действительно удалить?')) {
+        _.remove(this.posts, (post) => { return post.id === id })
+        this.posts = _.clone(this.posts)
+        console.log(this.posts)
+        axios.post('http://localhost:6500/delnews', {id})
+      }
     },
     getNews () {
       // var storeNews = this.posts  // хранилище новостей
@@ -81,7 +86,9 @@ export default {
       this.posts.push(this.newPost)
       this.newPost = {
         title: 'Novi post',
-        content: 'Novi-novi content'
+        content: 'Novi-novi content',
+        created_at: Date.now(),
+        author: 'anonim'
       }
     }
   },
@@ -105,6 +112,14 @@ hr {
 
 .il {
   display: inline;
+}
+
+div {
+  position: relative;
+}
+
+textarea {
+  position: absolute;
 }
 </style>
 
