@@ -6,15 +6,18 @@
       <label for="author">Author</label>
       <input type="text" name="author" id="post-author" v-model="newPost.author"><br>
       <br>
-      <label for="content">Content</label>
-      <textarea name="content" id="post-content" cols="53" rows="4" v-model="newPost.content"></textarea><br>
+      <div>
+        <label id="for_textarea" for="content">Content</label>
+        <textarea name="content" id="post-content" cols="53" rows="4" v-model="newPost.content"></textarea>
+      </div><br>
       <button @click="saveNews">Add Post</button>
     </div>
     <hr> 
     <!-- Кнопки получения (GET) и сохранения (SAVE) новостей -->
     <!-- <button class="il" @click="getNews">GET News</button>  -->
     <!-- <button class="il" @click="saveNews">save News</button> @click="saveNewsInArchiv"-->
-    <button @click="saveNewsInArchiv">Add Posts in Archiv</button>
+    <!-- <button @click="saveNewsInArchiv">Add Posts in Archiv</button> -->
+    <button>Add Posts in Archiv</button>
     <!-- Список новостей  -->
     <newslist :items="posts" @deleteitem="deleteItem"></newslist>
   </div>
@@ -25,6 +28,7 @@ import newslist from './NewsList'
 import _ from 'lodash'
 import axios from 'axios'
 import uuidv4 from 'uuid/v4'
+// import moment from 'moment'
 
 export default {
   name: 'NewsRoot',
@@ -59,7 +63,7 @@ export default {
     deleteItem (id) {
       console.log(`deletefromroot ${id}`)
       // debugger
-      if (confirm('вы уверены? действительно удалить?')) {
+      if (confirm('Действительно удалить?')) {
         _.remove(this.posts, (post) => { return post.id === id })
         this.posts = _.clone(this.posts)
         console.log(this.posts)
@@ -114,12 +118,20 @@ hr {
   display: inline;
 }
 
-div {
+/* div {
   position: relative;
 }
 
-textarea {
+#for_textarea {
   position: absolute;
+  left: 120px;
+  top: 0px;
 }
+
+textarea { 
+  position: absolute;
+  left: 180px; 
+  top: 0px; 
+}  */
 </style>
 

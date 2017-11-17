@@ -44,6 +44,21 @@ app.post('/delnews', jsonParser, (req, res, next) => {
   })
 })
 
+app.get('/newnews', (req, res, next) => {
+  client.hvals('news111', (err, items) => {
+    // console.log(err)
+    items = items || []
+    if (err) {
+      res.json({status: 'FAIL', error: err})
+      console.log('Ошибка при выводе новостей из базы: ' + err)
+      return
+    }
+    items = items.map((item) => { return JSON.parse(item) })
+    // console.log(items)
+    res.json(items)
+  })
+})
+
 var port = process.env.PORT || 6500
 app.listen(port)
 console.log(`start server on port ${port}`)

@@ -4,6 +4,8 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 import Vuex from 'vuex'
+import moment from 'moment'
+import _ from 'lodash'
 
 Vue.use(Vuex)
 
@@ -12,13 +14,23 @@ router.hashbang = false
 
 const store = new Vuex.Store({
   state: {
-    count: 0
+    posts: []
   },
   mutations: {
-    increment (state) {
-      state.count++
+    addNews (state) {
+      state.push()
+    },
+    addTask (state, taskItem) {
+      state.taskList.push({...taskItem})
+    }
+  },
+  getters: {
+    getTaskByDate: (state, getters) => (date) => {
+      const day = Math.floor(moment(date).valueOf() / 86400)
+      return _.filter(state.taskList, (e) => { return e.day <= day })
     }
   }
+
 })
 
 /* eslint-disable no-new */
