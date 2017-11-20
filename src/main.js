@@ -6,6 +6,8 @@ import router from './router'
 import Vuex from 'vuex'
 import moment from 'moment'
 import _ from 'lodash'
+import axios from 'axios'
+import uuidv4 from 'uuid/v4'
 
 Vue.use(Vuex)
 
@@ -22,6 +24,54 @@ const store = new Vuex.Store({
     },
     addTask (state, taskItem) {
       state.taskList.push({...taskItem})
+    },
+    methods: {
+      addPost () {
+        var post = {
+          ...this.newPost,
+          id: ++this.idCounter,
+          created_at: Date.now(),
+          author: 'anonim'
+        }
+        console.log(this.post.author)
+        this.posts.push(post)
+        axios.post('http://localhost:6500/newnews')
+      },
+      deleteItem (id) {
+        console.log(`deletefromroot ${id}`)
+        // debugger
+        if (confirm('Действительно удалить?')) {
+          _.remove(this.posts, (post) => { return post.id === id })
+          this.posts = _.clone(this.posts)
+          console.log(this.posts)
+          axios.post('http://localhost:6500/delnews', {id})
+        }
+      },
+      getNews () {
+        // var storeNews = this.posts  // хранилище новостей
+        // console.log(storeNews)
+        axios.get(`http://localhost:6500/newnews`)
+        .then(response => {
+          this.posts = response.data
+          this.loading = false
+        })
+        .catch(e => {
+          this.errors.push(e)
+        })
+      },
+      saveNews () {
+        this.newPost.id = uuidv4()
+        axios.post('http://localhost:6500/savenews', this.newPost).then((req) => {
+          console.log(req.data)
+        })
+        this.posts.push(this.newPost)
+        this.newPost = {
+          title: 'Novi post',
+          content: 'Novi-novi content',
+          created_at: Date.now(),
+          author: 'anonim'
+        }
+      }
     }
   },
   getters: {
