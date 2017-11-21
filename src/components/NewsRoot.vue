@@ -19,6 +19,7 @@
     <!-- <button @click="saveNewsInArchiv">Add Posts in Archiv</button> -->
     <button>Add Posts in Archiv</button>
     <!-- Список новостей  -->
+    <div id = 'state'>state:{{ this.$store.state.count }}</div>
     <newslist :items="posts" @deleteitem="deleteItem"></newslist>
   </div>
 </template>
@@ -58,6 +59,8 @@ export default {
       }
       console.log(this.post.author)
       this.posts.push(post)
+      this.$store.commit('increment')
+      console.log('state: -' + this.$store.state.count)
       axios.post('http://localhost:6500/newnews')
     },
     deleteItem (id) {
@@ -116,6 +119,13 @@ hr {
 
 .il {
   display: inline;
+}
+
+#state {
+  position: fixed;
+  left: 20px; 
+  top: 30px;
+  background: lightseagreen
 }
 
 /* div {
