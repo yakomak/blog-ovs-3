@@ -1,37 +1,18 @@
 <template>
   <div>
     <div class="create-news-form" >
-      <label for="title">Title</label>
-      <input type="text" name="title" id="post-title" v-model="newPost.title">
-      <label for="author">Author</label>
-      <input type="text" name="author" id="post-author" v-model="newPost.author"><br>
-      <br>
-      <div>
-        <label id="for_textarea" for="content">Content</label>
-        <textarea name="content" id="post-content" cols="53" rows="4" v-model="newPost.content"></textarea>
-      </div><br>
-      <button @click="saveNews">Add Post</button>
+      <h1 for="hello">Hello</h1>
     </div>
     <hr>
-    <!-- Кнопки получения (GET) и сохранения (SAVE) новостей -->
-    <!-- <button class="il" @click="getNews">GET News</button>  -->
-    <!-- <button class="il" @click="saveNews">save News</button> @click="saveNewsInArchiv"-->
-    <!-- <button @click="saveNewsInArchiv">Add Posts in Archiv</button> -->
-    <button>Add Posts in Archiv</button>
-    <!-- Список новостей  -->
-    <div id = 'state'>state:{{ this.$store.state.count }}</div>
-    <newslist :items="$store.state.posts" @deleteitem="deleteItem"></newslist>
   </div>
 </template>
 
 <script>
 import newslist from './NewsList'
-// import _ from 'lodash'
+import _ from 'lodash'
 import axios from 'axios'
 import uuidv4 from 'uuid/v4'
-import moment from 'moment'
-
-var now = moment()
+// import moment from 'moment'
 
 export default {
   name: 'NewsRoot',
@@ -40,7 +21,7 @@ export default {
       newPost: {
         title: 'Title',
         content: 'Lorem etc.',
-        created_at: now,
+        created_at: 'now',
         author: 'anonimus'
       },
       idCounter: 0,
@@ -50,19 +31,18 @@ export default {
   // created () {
   //   debugger
   //   this.$on('deleteitem', this.deleteItem)
-  // now1},
+  // },
   methods: {
     addPost () {
-      var now1 = moment()
       var post = {
         ...this.newPost,
         id: ++this.idCounter,
-        created_at: now1,
-        // created_at: Date.now(),
+        created_at: Date.now(),
         author: 'anonim'
       }
       console.log(this.post.author)
       this.posts.push(post)
+      // this.$store.commit('increment')
       // console.log('state: -' + this.$store.state.count)
       axios.post('http://localhost:6500/newnews')
     },
@@ -70,19 +50,18 @@ export default {
       console.log(`deletefromroot ${id}`)
       // debugger
       // if (confirm('Действительно удалить?')) {
-      // _.remove(this.posts, (post) => { return post.id === id })
-      this.$store.commit('deletePost', id)
+      _.remove(this.posts, (post) => { return post.id === id })
+      this.posts = _.clone(this.posts)
+      console.log(this.posts)
       axios.post('http://localhost:6500/delnews', {id})
+      // }
     },
     getNews () {
       // var storeNews = this.posts  // хранилище новостей
       // console.log(storeNews)
       axios.get(`http://localhost:6500/newnews`)
       .then(response => {
-        // this.posts = response.data
-        for (let post of response.data) {
-          this.$store.commit('addPost', post)
-        }
+        this.posts = response.data
         this.loading = false
       })
       .catch(e => {
@@ -94,8 +73,7 @@ export default {
       axios.post('http://localhost:6500/savenews', this.newPost).then((req) => {
         console.log(req.data)
       })
-      // this.posts.push(this.newPost)
-      this.$store.commit('addPost', this.newPost)
+      this.posts.push(this.newPost)
       this.newPost = {
         title: 'Novi post',
         content: 'Novi-novi content',
@@ -108,11 +86,9 @@ export default {
     'newslist': newslist
   },
   created: function () {
-    axios.get(`http://localhost:6500/newnews`).then(response => {
-      console.log(response.data)
-      for (let post of response.data) {
-        this.$store.commit('addPost', post)
-      }
+    axios.get(`http://localhost:6500/newnews`)
+    .then(response => {
+      this.posts = response.data
       this.loading = false
     })
   }

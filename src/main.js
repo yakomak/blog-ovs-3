@@ -5,7 +5,7 @@ import App from './App'
 import router from './router'
 import Vuex from 'vuex'
 // import moment from 'moment'
-// import _ from 'lodash'
+import _ from 'lodash'
 // import axios from 'axios'
 // import uuidv4 from 'uuid/v4'
 
@@ -22,6 +22,14 @@ const store = new Vuex.Store({
   mutations: {
     increment (state) {
       state.count++
+    },
+    addPost (state, post) {
+      console.log('addPost', state, post)
+      state.posts.push({...post})
+    },
+    deletePost (state, id) {
+      state.posts = _.filter(state.posts, (p) => { return p.id !== id })
+      // _.remove(state.posts, {id: id})
     }
   }
 //     addNews (state) {

@@ -46,4 +46,8 @@ https://www.w3schools.com/code/tryit.asp?filename=FLGT96U7ZDSZ
 https://codepen.io/ykm/pen/VrWvOy
 ====================================================
 
+var now = moment(); // текущая дата
+
+
+
 
