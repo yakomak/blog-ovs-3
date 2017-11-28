@@ -19,7 +19,10 @@
     <!-- <button @click="saveNewsInArchiv">Add Posts in Archiv</button> -->
     <button>Add Posts in Archiv</button>
     <!-- Список новостей  -->
-    <div id = 'state'>state:{{ this.$store.state.count }}</div>
+    <div id = 'state'>   <!-- Список новостей  -->
+      <p>state: added - {{ this.$store.state.countadded}}</p>
+      <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;deleted - {{ this.$store.state.countdeleted }}</p>
+    </div>
     <newslist :items="$store.state.posts" @deleteitem="deleteItem"></newslist>
   </div>
 </template>
@@ -31,7 +34,7 @@ import axios from 'axios'
 import uuidv4 from 'uuid/v4'
 import moment from 'moment'
 
-var now = moment()
+var now = moment().format('DD.MM.YYYYг, hh:mm')
 
 export default {
   name: 'NewsRoot',
@@ -39,9 +42,9 @@ export default {
     return {
       newPost: {
         title: 'Title',
-        content: 'Lorem etc.',
+        content: 'Content etc.',
         created_at: now,
-        author: 'anonimus'
+        author: 'Author'
       },
       idCounter: 0,
       posts: []
@@ -58,35 +61,25 @@ export default {
         ...this.newPost,
         id: ++this.idCounter,
         created_at: now1,
-        // created_at: Date.now(),
         author: 'anonim'
       }
       console.log(this.post.author)
       this.posts.push(post)
-      // console.log('state: -' + this.$store.state.count)
       axios.post('http://localhost:6500/newnews')
     },
     deleteItem (id) {
       console.log(`deletefromroot ${id}`)
-      // debugger
-      // if (confirm('Действительно удалить?')) {
-      // _.remove(this.posts, (post) => { return post.id === id })
       this.$store.commit('deletePost', id)
+      this.$store.commit('incrementdeleted')
       axios.post('http://localhost:6500/delnews', {id})
     },
     getNews () {
-      // var storeNews = this.posts  // хранилище новостей
-      // console.log(storeNews)
       axios.get(`http://localhost:6500/newnews`)
       .then(response => {
-        // this.posts = response.data
         for (let post of response.data) {
           this.$store.commit('addPost', post)
         }
         this.loading = false
-      })
-      .catch(e => {
-        this.errors.push(e)
       })
     },
     saveNews () {
@@ -96,6 +89,7 @@ export default {
       })
       // this.posts.push(this.newPost)
       this.$store.commit('addPost', this.newPost)
+      this.$store.commit('incrementadded')
       this.newPost = {
         title: 'Novi post',
         content: 'Novi-novi content',

@@ -10,18 +10,21 @@ import _ from 'lodash'
 // import uuidv4 from 'uuid/v4'
 
 Vue.use(Vuex)
-
 Vue.config.productionTip = false
 router.hashbang = false
 
 const store = new Vuex.Store({
   state: {
     posts: [],
-    count: 0
+    countadded: 0,
+    countdeleted: 0
   },
   mutations: {
-    increment (state) {
-      state.count++
+    incrementadded (state) {
+      state.countadded++
+    },
+    incrementdeleted (state) {
+      state.countdeleted++
     },
     addPost (state, post) {
       console.log('addPost', state, post)

@@ -28,11 +28,11 @@ export default {
 
   .flex {
     display: flex;
-    flex-direction: row;
+    flex-direction: row-reverse;
     /* justify-content: space-around; */
-    /* justify-content: space-between; */
-    justify-content: center;
-    flex-wrap: wrap;
+     justify-content: space-between; 
+    /* justify-content: center; */
+    flex-wrap: wrap-reverse;
   }
 </style>
 
